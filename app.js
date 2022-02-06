@@ -18,10 +18,10 @@ const myMiddleware = (req, res, next) => {
   next();
 };
 
-const todo = [
-  { id: uuid(), title: "Take out trash", completed: false },
-  { id: uuid(), title: "Cook dinner", completed: false },
-  { id: uuid(), title: "Go on a date", completed: true },
+const todoList = [
+  { id: 1, title: "Take out trash", completed: false },
+  { id: 2, title: "Cook dinner", completed: false },
+  { id: 3, title: "Go on a date", completed: true },
 ];
 
 app.get("/", (req, res) => {
@@ -30,7 +30,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/todos", myMiddleware, (req, res) => {
-  res.json(todo);
+  res.json(todoList);
 });
 
 app.post("/todos", (req, res) => {
@@ -40,8 +40,17 @@ app.post("/todos", (req, res) => {
     title,
     completed: false,
   };
-  todo.unshift(newTodo);
+  todoList.unshift(newTodo);
   res.send("okay");
 });
+ 
 
+app.delete("/todos/:id", (req, res) => {
+   const id=req.params.id
+  
+   const filterTodos = todoList.filter(todo => todo.id != id);
+   
+   res.send(filterTodos);   
+
+})
 app.listen(PORT, () => console.log(`listening on port ${PORT}`));
